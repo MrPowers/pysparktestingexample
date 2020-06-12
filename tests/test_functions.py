@@ -2,6 +2,7 @@ import pytest
 
 from pysparktestingexample.functions import remove_non_word_characters
 from chispa.column_comparer import assert_column_equality
+from chispa.column_comparer import ColumnsNotEqualError
 import pyspark.sql.functions as F
 
 from pyspark.sql import SparkSession
@@ -32,5 +33,6 @@ def test_remove_non_word_characters_nice_error():
     ]
     df = spark.createDataFrame(data, ["name", "expected_name"])\
         .withColumn("clean_name", remove_non_word_characters(F.col("name")))
-    assert_column_equality(df, "clean_name", "expected_name")
+    with pytest.raises(ColumnsNotEqualError) as e_info:
+        assert_column_equality(df, "clean_name", "expected_name")
 
