@@ -1,15 +1,9 @@
-from pysparktestingexample.transformations import sort_columns
-from chispa.dataframe_comparer import assert_df_equality
+import pysparktestingexample.transformations as T
+import pysparktestingexample.string_helpers as SH
+from chispa import assert_df_equality
 import pyspark.sql.functions as F
 
-from pyspark.sql import SparkSession
-
-spark = SparkSession.builder \
-  .master("local") \
-  .appName("chispa") \
-  .getOrCreate()
-
-def test_sort_columns_asc():
+def test_sort_columns_asc(spark):
     source_data = [
         ("jose", "oak", "switch"),
         ("li", "redwood", "xbox"),
@@ -17,7 +11,7 @@ def test_sort_columns_asc():
     ]
     source_df = spark.createDataFrame(source_data, ["name", "tree", "gaming_system"])
 
-    actual_df = sort_columns(source_df, "asc")
+    actual_df = T.sort_columns(source_df, "asc")
 
     expected_data = [
         ("switch", "jose", "oak"),
@@ -29,7 +23,7 @@ def test_sort_columns_asc():
     assert_df_equality(actual_df, expected_df)
 
 
-def test_sort_columns_desc():
+def test_sort_columns_desc(spark):
     source_data = [
         ("jose", "oak", "switch"),
         ("li", "redwood", "xbox"),
@@ -37,7 +31,7 @@ def test_sort_columns_desc():
     ]
     source_df = spark.createDataFrame(source_data, ["name", "tree", "gaming_system"])
 
-    actual_df = sort_columns(source_df, "desc")
+    actual_df = T.sort_columns(source_df, "desc")
 
     expected_data = [
         ("oak", "jose", "switch"),
@@ -45,6 +39,26 @@ def test_sort_columns_desc():
         ("maple", "luisa", "ps4"),
     ]
     expected_df = spark.createDataFrame(expected_data, ["tree", "name", "gaming_system"])
+
+    assert_df_equality(actual_df, expected_df)
+
+
+def test_modify_column_names_error(spark):
+    source_data = [
+        ("jose", 8),
+        ("li", 23),
+        ("luisa", 48),
+    ]
+    source_df = spark.createDataFrame(source_data, ["first.name", "person.favorite.number"])
+
+    actual_df = T.modify_column_names(source_df, SH.dots_to_underscores)
+
+    expected_data = [
+        ("jose", 8),
+        ("li", 23),
+        ("luisa", 48),
+    ]
+    expected_df = spark.createDataFrame(expected_data, ["first_name", "person_favorite_number"])
 
     assert_df_equality(actual_df, expected_df)
 
