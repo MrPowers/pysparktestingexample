@@ -169,6 +169,17 @@ checkqa-mypy = ["mypy (v0.761)"]
 testing = ["argcomplete", "hypothesis (>=3.56)", "mock", "nose", "requests", "xmlschema"]
 
 [[package]]
+category = "main"
+description = "Pyspark helper methods to maximize developer efficiency"
+name = "quinn"
+optional = false
+python-versions = ">2.7"
+version = "0.6.0"
+
+[package.dependencies]
+pyspark = ">2.0.0"
+
+[[package]]
 category = "dev"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
@@ -198,7 +209,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "3debbb944beb1ec38ab5b19e0805f1b52e522e6cf33722d14cbb7394bcc9376e"
+content-hash = "98c3f983b4cf578aa8d963cf738f47f3a30f7a53207d706533e1790bfd13d010"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -257,6 +268,10 @@ pyspark = [
 pytest = [
     {file = "pytest-5.4.3-py3-none-any.whl", hash = "sha256:5c0db86b698e8f170ba4582a492248919255fcd4c79b1ee64ace34301fb589a1"},
     {file = "pytest-5.4.3.tar.gz", hash = "sha256:7979331bfcba207414f5e1263b5a0f8f521d0f457318836a7355531ed1a4c7d8"},
+]
+quinn = [
+    {file = "quinn-0.6.0-py2.py3-none-any.whl", hash = "sha256:617c7986447f66bc15743bc59e81e12c6354a5a2b48153f5ba8fc441c5b12494"},
+    {file = "quinn-0.6.0.tar.gz", hash = "sha256:c44cf57d7efd122da8fd587cdbd4cb4d5842940ab35efe46e84dd1fa7230c06f"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},

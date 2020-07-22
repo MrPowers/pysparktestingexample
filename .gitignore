@@ -1,6 +1,6 @@
 build/
 dist/
-chispa.egg-info/
+pysparktestingexample.egg-info/
 .cache/
 tmp/
 .idea/
