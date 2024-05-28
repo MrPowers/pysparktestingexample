@@ -1,4 +1,6 @@
-from chispa import assert_df_equality, assert_approx_df_equality
+from chispa import assert_df_equality, assert_approx_df_equality, DataFramesNotEqualError
+from chispa.schema_comparer import SchemasNotEqualError
+import pytest
 
 
 def test_approx_df_equality_same(spark):
@@ -37,8 +39,8 @@ def test_approx_df_equality_different(spark):
         (None, None)
     ]
     df2 = spark.createDataFrame(data2, ["num", "letter"])
-
-    assert_approx_df_equality(df1, df2, 0.1)
+    with pytest.raises(DataFramesNotEqualError) as e_info:
+        assert_approx_df_equality(df1, df2, 0.1)
 
 
 def test_schema_mismatch_message(spark):
@@ -57,6 +59,6 @@ def test_schema_mismatch_message(spark):
         (None, None)
     ]
     df2 = spark.createDataFrame(data2, ["num", "num2"])
-
-    assert_df_equality(df1, df2)
+    with pytest.raises(SchemasNotEqualError) as e_info:
+        assert_df_equality(df1, df2)
 

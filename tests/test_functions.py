@@ -1,7 +1,7 @@
 import pytest
 
 from pysparktestingexample.functions import remove_non_word_characters, divide_by_three
-from chispa import assert_column_equality, assert_approx_column_equality
+from chispa import assert_column_equality, assert_approx_column_equality, ColumnsNotEqualError
 import pyspark.sql.functions as F
 
 def test_remove_non_word_characters(spark):
@@ -25,8 +25,8 @@ def test_remove_non_word_characters_nice_error(spark):
     ]
     df = spark.createDataFrame(data, ["name", "expected_name"])\
         .withColumn("clean_name", remove_non_word_characters(F.col("name")))
-    # with pytest.raises(ColumnsNotEqualError) as e_info:
-    assert_column_equality(df, "clean_name", "expected_name")
+    with pytest.raises(ColumnsNotEqualError) as e_info:
+        assert_column_equality(df, "clean_name", "expected_name")
 
 
 def test_divide_by_three(spark):
@@ -50,5 +50,6 @@ def test_divide_by_three_error(spark):
     ]
     df = spark.createDataFrame(data, ["num", "expected"])\
         .withColumn("num_divided_by_three", divide_by_three(F.col("num")))
-    assert_approx_column_equality(df, "num_divided_by_three", "expected", 0.01)
+    with pytest.raises(ColumnsNotEqualError) as e_info:
+        assert_approx_column_equality(df, "num_divided_by_three", "expected", 0.01)
 
